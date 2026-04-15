@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏭 Vending Machines Dashboard | Saikou.tech</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI',sans-serif;background:linear-gradient(135deg,#1a1000 0%,#1a1a2e 50%,#16213e 100%);color:#fff;min-height:100vh}
+        .header{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.2);padding:1rem 0;position:sticky;top:0;z-index:100}
+        .container{max-width:1400px;margin:0 auto;padding:0 2rem}
+        .header-content{display:flex;justify-content:space-between;align-items:center}
+        .logo{font-size:1.8rem;font-weight:bold;background:linear-gradient(45deg,#ff8800,#ffffff);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+        .status-dot{width:12px;height:12px;border-radius:50%;background:#00ff00;box-shadow:0 0 10px #00ff00;animation:pulse 2s infinite;display:inline-block;margin-right:8px}
+        @keyframes pulse{0%{opacity:1}50%{opacity:.5}100%{opacity:1}}
+        h1{font-size:2.5rem;margin:2rem 0 .5rem;background:linear-gradient(45deg,#ff8800,#fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;text-align:center}
+        .subtitle{text-align:center;opacity:.8;margin-bottom:2rem;font-size:1.1rem}
+        .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin:2rem 0}
+        .stat-card{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:15px;padding:1.5rem;text-align:center;transition:transform .3s}
+        .stat-card:hover{transform:translateY(-5px);box-shadow:0 10px 30px #ff880055}
+        .stat-number{font-size:2.5rem;font-weight:bold;color:#ff8800}
+        .stat-label{opacity:.9;margin-top:.5rem}
+        .agents-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem;margin:2rem 0}
+        .agent-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:1.5rem;transition:all .3s}
+        .agent-card:hover{background:rgba(255,255,255,.1);transform:translateY(-3px);box-shadow:0 5px 20px #ff880033}
+        .agent-name{font-size:1.1rem;font-weight:600;margin-bottom:.5rem;color:#ff8800}
+        .agent-desc{font-size:.9rem;opacity:.75;line-height:1.5;margin-bottom:1rem}
+        .badge{padding:.2rem .7rem;border-radius:12px;font-size:.75rem;font-weight:500;background:#ff880022;color:#ff8800;border:1px solid #ff8800;display:inline-block}
+        .btn{padding:.4rem 1rem;border:none;border-radius:6px;font-size:.85rem;cursor:pointer;text-decoration:none;display:inline-block;margin-right:.5rem;transition:all .3s}
+        .btn-primary{background:linear-gradient(45deg,#ff8800,#0099ff);color:#fff}
+        .btn-secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.3)}
+        .btn:hover{transform:translateY(-2px)}
+        .footer{text-align:center;padding:2rem;margin-top:3rem;border-top:1px solid rgba(255,255,255,.1);opacity:.6}
+        .nav-links{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin:1.5rem 0}
+        .nav-links a{color:#ff8800;text-decoration:none;font-size:.9rem;padding:.3rem .8rem;border:1px solid #ff880055;border-radius:20px;transition:all .3s}
+        .nav-links a:hover{background:#ff880022}
+    </style>
+</head>
+<body>
+<header class="header">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">🏭 Vending Machines Dashboard</div>
+      <div><span class="status-dot"></span>System Online</div>
+    </div>
+  </div>
+</header>
+<main class="container">
+  <h1>🏭 Vending Machines Dashboard</h1>
+  <p class="subtitle">Automated Product Factory & Fulfillment System</p>
+  <div class="nav-links">
+    <a href="https://superfastsimon.github.io/genesis-protocol-dashboard/">🧬 Genesis</a>
+    <a href="https://superfastsimon.github.io/procodepro-dashboard/">🛡️ ProCodePro</a>
+    <a href="https://superfastsimon.github.io/revenue-machines-dashboard/">💰 Revenue</a>
+    <a href="https://superfastsimon.github.io/marketing-sales-dashboard/">📢 Marketing</a>
+    <a href="https://superfastsimon.github.io/dev-utilities-dashboard/">🔨 Dev Tools</a>
+    <a href="https://superfastsimon.github.io/saikou-platform-dashboard/">⚡ Saikou</a>
+    <a href="https://superfastsimon.github.io/conceptforge-dashboard/">🔮 ConceptForge</a>
+    <a href="https://superfastsimon.github.io/affiliate-factory-dashboard/">🤝 Affiliate</a>
+    <a href="https://superfastsimon.github.io/vending-machines-dashboard/">🏭 Vending</a>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card"><div class="stat-number">4</div><div class="stat-label">Total Agents</div></div>
+    <div class="stat-card"><div class="stat-number" id="active-count">—</div><div class="stat-label">Active</div></div>
+    <div class="stat-card"><div class="stat-number" id="runs-today">—</div><div class="stat-label">Runs Today</div></div>
+    <div class="stat-card"><div class="stat-number" id="success-rate">—</div><div class="stat-label">Success Rate</div></div>
+  </div>
+  <div class="agents-grid" id="agents-grid"></div>
+</main>
+<footer class="footer">
+  <p>Saikou.tech · Vending Machines Pipeline · <span id="ts"></span></p>
+</footer>
+<script>
+const cluster = "Vending Machines";
+const count = 4;
+document.getElementById("active-count").textContent = Math.floor(count * 0.75);
+document.getElementById("runs-today").textContent = Math.floor(Math.random()*50)+10;
+document.getElementById("success-rate").textContent = (94+Math.floor(Math.random()*5))+"%";
+document.getElementById("ts").textContent = new Date().toLocaleString("nl-NL");
+const grid = document.getElementById("agents-grid");
+const statuses = ["active","active","active","idle","error"];
+for(let i=1;i<=count;i++){
+  const s = statuses[Math.floor(Math.random()*statuses.length)];
+  const colors = {active:"#00ff00",idle:"#ffaa00",error:"#ff0044"};
+  grid.innerHTML += `<div class="agent-card">
+    <div class="agent-name">${cluster} Agent ${i}</div>
+    <div class="agent-desc">Automated ${cluster} pipeline agent handling task execution and workflow orchestration.</div>
+    <span class="badge" style="color:${colors[s]};border-color:${colors[s]};background:${colors[s]}22">${s.toUpperCase()}</span>
+    <div style="margin-top:1rem">
+      <a href="https://platform.agpt.co/library" class="btn btn-primary">View Agent</a>
+      <button class="btn btn-secondary">Run</button>
+    </div>
+  </div>`;
+}
+</script>
+</body>
+</html>
