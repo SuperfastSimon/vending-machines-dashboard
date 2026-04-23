@@ -1,151 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="AI Vending Machines – Deploy digital vending machines that sell AI-generated products 24/7. Instant delivery, zero inventory, automated fulfillment.">
-<title>AI Vending Machines | Sell Digital Products 24/7 on Autopilot</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
-<style>
-  :root{--bg:#050507;--surface:#0f0f13;--surface2:#16161e;--border:rgba(255,255,255,0.08);--primary:#bb86fc;--secondary:#03dac6;--accent:#f471b0;--success:#00e676;--text:#e2e2e7;--text2:#71717a;--glass:rgba(15,15,19,0.75);}
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--text);font-family:'Plus Jakarta Sans',sans-serif;line-height:1.6;overflow-x:hidden;}
-  .bg-grid{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:50px 50px;mask-image:radial-gradient(ellipse at 50% 30%,black 20%,transparent 70%);opacity:0.35;}
-  nav{position:sticky;top:0;z-index:1000;display:flex;justify-content:space-between;align-items:center;padding:1.25rem 8%;background:var(--glass);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
-  .logo{display:flex;align-items:center;gap:12px;text-decoration:none;}
-  .logo-icon{width:38px;height:38px;background:linear-gradient(135deg,var(--secondary),var(--primary));border-radius:10px;display:flex;align-items:center;justify-content:center;color:#000;font-size:1.1rem;}
-  .logo-text{font-weight:800;font-size:1.3rem;color:#fff;letter-spacing:-0.5px;}
-  .nav-cta{background:var(--secondary);color:#000;padding:0.55rem 1.4rem;border-radius:10px;font-weight:700;text-decoration:none;font-size:0.9rem;transition:0.3s;}
-  .nav-cta:hover{opacity:0.85;transform:translateY(-1px);}
-  .hero{padding:8rem 8% 5rem;text-align:center;max-width:1100px;margin:0 auto;}
-  .badge{display:inline-flex;align-items:center;gap:8px;background:rgba(3,218,198,0.1);color:var(--secondary);padding:8px 18px;border-radius:100px;font-size:0.8rem;font-weight:700;border:1px solid rgba(3,218,198,0.3);margin-bottom:1.8rem;}
-  h1{font-size:clamp(2.5rem,7vw,4.2rem);font-weight:800;line-height:1.1;color:#fff;margin-bottom:1.5rem;}
-  h1 .grad{background:linear-gradient(135deg,var(--secondary),var(--primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-  .hero-sub{font-size:1.2rem;color:var(--text2);max-width:700px;margin:0 auto 3rem;}
-  .hero-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:0.9rem 2rem;border-radius:12px;font-weight:700;text-decoration:none;transition:0.3s;font-size:1rem;cursor:pointer;border:none;}
-  .btn-primary{background:var(--secondary);color:#000;}
-  .btn-outline{background:transparent;color:#fff;border:1px solid var(--border);}
-  .btn:hover{transform:translateY(-2px);opacity:0.9;}
-  .btn-full{width:100%;justify-content:center;}
-  /* VENDING DISPLAY */
-  .vending-showcase{padding:4rem 8%;max-width:1200px;margin:0 auto;}
-  .section-label{color:var(--secondary);font-size:0.8rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:1rem;}
-  .section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#fff;margin-bottom:1rem;}
-  .section-sub{color:var(--text2);max-width:620px;margin-bottom:3rem;}
-  .vending-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.5rem;}
-  .vending-card{background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;transition:0.4s;}
-  .vending-card:hover{transform:translateY(-5px);border-color:rgba(3,218,198,0.35);box-shadow:0 15px 50px rgba(0,0,0,0.4);}
-  .vcard-header{padding:1.5rem 1.5rem 0;display:flex;justify-content:space-between;align-items:flex-start;}
-  .vcard-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;}
-  .vcard-price{background:rgba(0,230,118,0.12);color:var(--success);padding:4px 12px;border-radius:8px;font-size:0.85rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
-  .vcard-body{padding:1.2rem 1.5rem 1.5rem;}
-  .vcard-body h3{font-size:1rem;font-weight:700;color:#fff;margin-bottom:0.5rem;}
-  .vcard-body p{color:var(--text2);font-size:0.88rem;margin-bottom:1.2rem;}
-  .vcard-meta{display:flex;gap:1rem;font-size:0.8rem;color:var(--text2);margin-bottom:1.2rem;}
-  .vcard-meta span{display:flex;align-items:center;gap:5px;}
-  .vcard-meta i{color:var(--secondary);}
-  .vcard-btn{display:block;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:0.65rem;text-align:center;color:#fff;font-weight:700;font-size:0.85rem;text-decoration:none;transition:0.2s;}
-  .vcard-btn:hover{background:var(--secondary);color:#000;border-color:var(--secondary);}
-  /* HOW IT WORKS */
-  .how-section{padding:5rem 8%;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border);}
-  .how-inner{max-width:1100px;margin:0 auto;}
-  .steps-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem;margin-top:3rem;}
-  .step{text-align:center;padding:1.5rem;}
-  .step-icon{width:64px;height:64px;border-radius:16px;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:1.5rem;margin:0 auto 1.2rem;color:var(--secondary);}
-  .step h3{color:#fff;font-weight:700;margin-bottom:0.5rem;}
-  .step p{color:var(--text2);font-size:0.9rem;}
-  /* STATS */
-  .stats-bar{display:grid;grid-template-columns:repeat(4,1fr);padding:3rem 8%;max-width:1200px;margin:0 auto;gap:1.5rem;text-align:center;}
-  .stat-num{font-size:2.2rem;font-weight:800;font-family:'JetBrains Mono',monospace;color:#fff;}
-  .stat-num span{color:var(--secondary);}
-  .stat-lbl{color:var(--text2);font-size:0.85rem;margin-top:0.3rem;}
-  /* CTA */
-  .cta-section{padding:6rem 8%;text-align:center;max-width:800px;margin:0 auto;}
-  .cta-section h2{font-size:2.5rem;font-weight:800;color:#fff;margin-bottom:1rem;}
-  .cta-section p{color:var(--text2);font-size:1.1rem;margin-bottom:2.5rem;}
-  footer{padding:3rem 8% 2rem;border-top:1px solid var(--border);max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
-  footer p{color:var(--text2);font-size:0.85rem;}
-  .footer-mono{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--secondary);}
-  @media(max-width:768px){.stats-bar{grid-template-columns:repeat(2,1fr);}.hero{padding:5rem 5% 3rem;}}
-</style>
-</head>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Vending Machines | Saikou.tech</title>
+<style>:root{--bg:#0a0a0f;--surface:#12121a;--surface2:#1a1a26;--border:#2a2a42;--accent:#00e676;--accent2:#00d4ff;--success:#00e676;--warning:#ffab00;--error:#ff5252;--text:#e8e8f0;--text2:#9090b0;}*{box-sizing:border-box;margin:0;padding:0;}body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;}::-webkit-scrollbar{width:6px;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;}.logo{display:flex;align-items:center;gap:12px;}.logo-icon{width:34px;height:34px;background:linear-gradient(135deg,#00e676,#00d4ff);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;}.logo-text{font-size:16px;font-weight:700;}.logo-sub{font-size:11px;color:var(--text2);letter-spacing:1px;text-transform:uppercase;}nav{display:flex;gap:10px;}a.nav-link{color:var(--text2);text-decoration:none;font-size:12px;padding:6px 12px;border-radius:8px;border:1px solid transparent;transition:all 0.2s;}a.nav-link:hover{border-color:var(--border);color:var(--text);}main{padding:32px;max-width:1300px;margin:0 auto;}.hero{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:32px;margin-bottom:28px;position:relative;overflow:hidden;}.hero::before{content:'🏭';position:absolute;right:32px;top:50%;transform:translateY(-50%);font-size:80px;opacity:0.07;}.hero-tag{display:inline-block;background:rgba(0,230,118,0.12);color:var(--success);font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}.hero h1{font-size:28px;font-weight:800;margin-bottom:8px;}.hero p{font-size:14px;color:var(--text2);max-width:600px;line-height:1.6;}a.back-link{font-size:12px;color:var(--text2);text-decoration:none;display:inline-flex;align-items:center;gap:6px;margin-bottom:20px;}a.back-link:hover{color:var(--accent);}.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin-bottom:28px;}.card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;}.card-title{font-size:12px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin-bottom:14px;}.stat-big{font-size:32px;font-weight:800;color:var(--accent);margin-bottom:4px;}.stat-label{font-size:12px;color:var(--text2);}.btn{padding:9px 18px;border-radius:8px;border:none;cursor:pointer;font-size:13px;font-weight:600;transition:all 0.2s;text-decoration:none;display:inline-block;}.btn-primary{background:var(--accent);color:#000;}.btn-primary:hover{opacity:0.85;}.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--border);}.btn-secondary:hover{border-color:var(--accent);color:var(--accent);}.item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;transition:border-color 0.2s;}.item:hover{border-color:var(--accent);}.item-icon{font-size:24px;width:36px;text-align:center;}.item-info{flex:1;}.item-name{font-size:14px;font-weight:600;margin-bottom:3px;}.item-desc{font-size:12px;color:var(--text2);}.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}.badge-live{background:rgba(0,230,118,0.15);color:var(--success);}.badge-build{background:rgba(255,171,0,0.15);color:var(--warning);}.badge-plan{background:rgba(144,144,176,0.15);color:var(--text2);}.section-title{font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:1.5px;margin:24px 0 14px;display:flex;align-items:center;gap:8px;}.section-title::after{content:'';flex:1;height:1px;background:var(--border);}</style></head>
 <body>
-<div class="bg-grid"></div>
-<nav>
-  <a href="#" class="logo">
-    <div class="logo-icon">🏪</div>
-    <span class="logo-text">VendingAI</span>
-  </a>
-  <a href="#machines" class="nav-cta">Deploy a Machine</a>
-</nav>
-<header class="hero">
-  <div class="badge"><i class="fas fa-store"></i> DIGITAL VENDING — 24/7 AUTOMATED SALES</div>
-  <h1>Your store is open <span class="grad">24/7 on autopilot.</span></h1>
-  <p class="hero-sub">Deploy AI-powered digital vending machines that generate, package, and deliver products the instant a customer pays. Zero inventory. Zero fulfillment work. Pure automated revenue.</p>
-  <div class="hero-actions">
-    <a href="#machines" class="btn btn-primary"><i class="fas fa-store"></i> Browse Machines</a>
-    <a href="#how" class="btn btn-outline"><i class="fas fa-play"></i> See How It Works</a>
-  </div>
+<header>
+  <div class="logo"><div class="logo-icon">🏭</div><div><div class="logo-text">Vending Machines</div><div class="logo-sub">Saikou.tech</div></div></div>
+  <nav><a class="nav-link" href="https://superfastsimon.github.io/saikou-platform-dashboard/">← Hub</a><a class="nav-link" href="https://superfastsimon.github.io/genesis-protocol-dashboard/">⚡ Genesis</a></nav>
 </header>
-<div class="stats-bar">
-  <div class="stat"><div class="stat-num"><span>0</span>s</div><div class="stat-lbl">Delivery Time</div></div>
-  <div class="stat"><div class="stat-num"><span>$0</span></div><div class="stat-lbl">Inventory Cost</div></div>
-  <div class="stat"><div class="stat-num"><span>24/7</span></div><div class="stat-lbl">Uptime, Always Selling</div></div>
-  <div class="stat"><div class="stat-num"><span>95</span>%</div><div class="stat-lbl">Avg Profit Margin</div></div>
-</div>
-<section class="vending-showcase" id="machines">
-  <div class="section-label">Machine Catalog</div>
-  <h2 class="section-title">Deploy a machine in under an hour</h2>
-  <p class="section-sub">Each machine is a complete product-delivery pipeline. Pick a niche, configure your pricing, connect Stripe, and start selling today.</p>
-  <div class="vending-grid">
-    <div class="vending-card">
-      <div class="vcard-header"><div class="vcard-icon" style="background:rgba(187,134,252,0.15);color:var(--primary);">📄</div><span class="vcard-price">$9.99</span></div>
-      <div class="vcard-body"><h3>AI Business Plan</h3><p>Customer inputs their idea. AI generates a 15-page business plan, SWOT analysis, and financial projections. Instant PDF.</p><div class="vcard-meta"><span><i class="fas fa-clock"></i> &lt;30s delivery</span><span><i class="fas fa-chart-line"></i> ~150 sales/mo</span></div><a href="#" class="vcard-btn">Deploy This Machine</a></div>
-    </div>
-    <div class="vending-card">
-      <div class="vcard-header"><div class="vcard-icon" style="background:rgba(3,218,198,0.15);color:var(--secondary);">🎨</div><span class="vcard-price">$19.99</span></div>
-      <div class="vcard-body"><h3>Brand Kit Generator</h3><p>Logo concepts, color palette, typography guide, and brand voice document — generated to spec and delivered as a ZIP.</p><div class="vcard-meta"><span><i class="fas fa-clock"></i> &lt;60s delivery</span><span><i class="fas fa-chart-line"></i> ~80 sales/mo</span></div><a href="#" class="vcard-btn">Deploy This Machine</a></div>
-    </div>
-    <div class="vending-card">
-      <div class="vcard-header"><div class="vcard-icon" style="background:rgba(244,113,176,0.15);color:var(--accent);">📸</div><span class="vcard-price">$4.99</span></div>
-      <div class="vcard-body"><h3>AI Headshot Pack</h3><p>Upload one selfie, receive 10 professional AI headshots ready for LinkedIn, websites, and business profiles.</p><div class="vcard-meta"><span><i class="fas fa-clock"></i> &lt;2min delivery</span><span><i class="fas fa-chart-line"></i> ~300 sales/mo</span></div><a href="#" class="vcard-btn">Deploy This Machine</a></div>
-    </div>
-    <div class="vending-card">
-      <div class="vcard-header"><div class="vcard-icon" style="background:rgba(0,230,118,0.15);color:var(--success);">⚖️</div><span class="vcard-price">$12.99</span></div>
-      <div class="vcard-body"><h3>Legal Doc Pack</h3><p>NDA, Terms of Service, Privacy Policy — auto-generated for the customer's specific business type and jurisdiction.</p><div class="vcard-meta"><span><i class="fas fa-clock"></i> &lt;45s delivery</span><span><i class="fas fa-chart-line"></i> ~120 sales/mo</span></div><a href="#" class="vcard-btn">Deploy This Machine</a></div>
-    </div>
-    <div class="vending-card">
-      <div class="vcard-header"><div class="vcard-icon" style="background:rgba(255,171,0,0.15);color:#ffab00;">📱</div><span class="vcard-price">$29.99</span></div>
-      <div class="vcard-body"><h3>30-Day Content Calendar</h3><p>Full month of social media posts, captions, and hashtag sets tailored to any niche — delivered as an editable doc.</p><div class="vcard-meta"><span><i class="fas fa-clock"></i> &lt;90s delivery</span><span><i class="fas fa-chart-line"></i> ~60 sales/mo</span></div><a href="#" class="vcard-btn">Deploy This Machine</a></div>
-    </div>
-    <div class="vending-card">
-      <div class="vcard-header"><div class="vcard-icon" style="background:rgba(187,134,252,0.15);color:var(--primary);">🔍</div><span class="vcard-price">$14.99</span></div>
-      <div class="vcard-body"><h3>SEO Audit Report</h3><p>Paste a URL, get a full 20-point SEO audit with fixes, priority scores, and a competitor gap analysis.</p><div class="vcard-meta"><span><i class="fas fa-clock"></i> &lt;2min delivery</span><span><i class="fas fa-chart-line"></i> ~90 sales/mo</span></div><a href="#" class="vcard-btn">Deploy This Machine</a></div>
-    </div>
+<main>
+  <a class="back-link" href="https://superfastsimon.github.io/saikou-platform-dashboard/">← Back to Platform Hub</a>
+  <div class="hero">
+    <div class="hero-tag">Revenue Engine</div>
+    <h1>🏭 Vending Machines</h1>
+    <p>Portfolio of autonomous online vending machines generating passive revenue. Standardized factory line — spin up new products with minimal effort. Each machine runs 24/7, no maintenance required.</p>
   </div>
-</section>
-<section class="how-section" id="how">
-  <div class="how-inner">
-    <div class="section-label">How It Works</div>
-    <h2 class="section-title" style="color:#fff;">Live in 4 steps</h2>
-    <div class="steps-grid">
-      <div class="step"><div class="step-icon"><i class="fas fa-store"></i></div><h3>Pick a Machine</h3><p>Choose from our catalog of pre-built digital product vending machines.</p></div>
-      <div class="step"><div class="step-icon"><i class="fas fa-sliders"></i></div><h3>Configure</h3><p>Set your price, customize the output template, and add your branding.</p></div>
-      <div class="step"><div class="step-icon"><i class="fab fa-stripe"></i></div><h3>Connect Stripe</h3><p>Link your Stripe account. Payments go directly to you — we never touch your revenue.</p></div>
-      <div class="step"><div class="step-icon"><i class="fas fa-rocket"></i></div><h3>Go Live</h3><p>Share your vending machine URL. Every purchase triggers instant AI generation and delivery.</p></div>
-    </div>
+  <div class="grid">
+    <div class="card"><div class="card-title">Total Machines</div><div class="stat-big">6</div><div class="stat-label">Active products</div></div>
+    <div class="card"><div class="card-title">Architecture</div><div class="stat-big">2x</div><div class="stat-label">Dual frontend per product</div></div>
+    <div class="card"><div class="card-title">Affiliate Coverage</div><div class="stat-big">100%</div><div class="stat-label">All products enrolled</div></div>
   </div>
-</section>
-<section class="cta-section">
-  <h2>Ready to deploy your first machine?</h2>
-  <p>Start free. Deploy one machine. Keep 100% of revenue on the free plan up to $500/mo.</p>
-  <a href="#" class="btn btn-primary"><i class="fas fa-store"></i> Deploy Free Machine</a>
-</section>
-<footer>
-  <p>© 2026 VendingAI. Automated digital commerce.</p>
-  <span class="footer-mono">POWERED BY SAIKOU TECH</span>
-</footer>
-</body>
-</html>
+  <div class="section-title">Active Machines</div>
+  <div class="item"><div class="item-icon">📄</div><div class="item-info"><div class="item-name">CV / Resume Writer SaaS</div><div class="item-desc">3-tier: Free (CV Quick Start) · Pro (CV Pro) · Elite (Instant Millionaire). EN + NL bilingual.</div></div><span class="badge badge-live">LIVE</span><a class="btn btn-secondary" href="https://superfastsimon.github.io/revenue-machines-dashboard/" target="_blank" style="margin-left:10px;font-size:11px;padding:5px 10px;">View</a></div>
+  <div class="item"><div class="item-icon">🖼️</div><div class="item-info"><div class="item-name">Nano Banana Image Generator</div><div class="item-desc">White-label AI image API reseller. Branded web interface with payment. Margin on each credit.</div></div><span class="badge badge-live">LIVE</span></div>
+  <div class="item"><div class="item-icon">📊</div><div class="item-info"><div class="item-name">AI Premium Report Factory</div><div class="item-desc">5-step pipeline. Sell reports €50-200 via auto-deployed sales pages on Fiverr/Upwork/SaaS.</div></div><span class="badge badge-live">LIVE</span><a class="btn btn-secondary" href="https://superfastsimon.github.io/revenue-machines-dashboard/" target="_blank" style="margin-left:10px;font-size:11px;padding:5px 10px;">View</a></div>
+  <div class="item"><div class="item-icon">⚖️</div><div class="item-info"><div class="item-name">Legal Doc Generator</div><div class="item-desc">$5-15/doc, PDF delivery, Stripe payment. Auto-generated legal documents on demand.</div></div><span class="badge badge-live">LIVE</span><a class="btn btn-primary" href="https://github.com/SuperfastSimon/legal-doc-generator" target="_blank" style="margin-left:10px;font-size:11px;padding:5px 10px;">Repo</a></div>
+  <div class="item"><div class="item-icon">💳</div><div class="item-info"><div class="item-name">API Credit Hub</div><div class="item-desc">Wholesale API credits at 30% below retail. Reseller margin model.</div></div><span class="badge badge-live">LIVE</span><a class="btn btn-primary" href="https://github.com/SuperfastSimon/api-credit-hub" target="_blank" style="margin-left:10px;font-size:11px;padding:5px 10px;">Repo</a></div>
+  <div class="item"><div class="item-icon">🤳</div><div class="item-info"><div class="item-name">AI Headshot Generator</div><div class="item-desc">$4.99/headshot. Professional AI-generated headshots on demand.</div></div><span class="badge badge-live">LIVE</span><a class="btn btn-primary" href="https://github.com/SuperfastSimon/ai-headshot-generator" target="_blank" style="margin-left:10px;font-size:11px;padding:5px 10px;">Repo</a></div>
+  <div class="section-title">Factory Template</div>
+  <div class="card"><div class="card-title">Dual Frontend Architecture</div><p style="font-size:13px;color:var(--text2);line-height:1.7;">Every vending machine uses the same reusable template:<br><strong style="color:var(--text);">Owner Dashboard</strong> — manage products, view revenue, configure agents<br><strong style="color:var(--text);">Customer UI</strong> — public-facing storefront with payment integration<br>Built on Genesis Protocol. Deployed via GitHub Pages + Render.</p></div>
+</main></body></html>
